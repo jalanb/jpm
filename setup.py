@@ -29,7 +29,7 @@ setup(
         'Operating System :: Unix',
         'Topic :: Multimedia :: Sound/Audio :: Players',
     ],
-    scripts=['scripts/jpm'],
+    scripts=['bin/jpm'],
     install_requires=['python-mpd2'],
     test_suite='nose.collector',
     tests_require=['nose'],
