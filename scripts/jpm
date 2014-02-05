@@ -1,0 +1,20 @@
+#! /usr/bin/env python2
+
+import os
+import sys
+
+
+import jpm
+
+
+def main(args):
+    try:
+        jpm.play(args)
+    except Exception, e:
+        print >> sys.stderr, e
+        return not os.EX_OK
+    return os.EX_OK
+
+
+if __name__ == '__main__':
+    sys.exit(sys.argv[1:])
