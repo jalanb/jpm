@@ -35,6 +35,7 @@ setup(
     tests_require=['nose'],
     extras_require={
         'docs': ['Sphinx'],
+        'development': ['pudb'],
         'testing': ['nose'],
     }
 )
