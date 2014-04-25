@@ -11,7 +11,8 @@ import jpm
 def main(args):
     """Run the program"""
     try:
-        jpm.play(args)
+        for arg in args:
+            jpm.play(arg)
     except Exception, e:
         print >> sys.stderr, e
         return not os.EX_OK
