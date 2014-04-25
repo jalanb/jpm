@@ -4,10 +4,18 @@
 import mpd
 
 
-def play(arg):
-    raise NotImplementedError(repr(arg))
+from dotsite.decorators import memoize
 
 
+def play(arg=None):
+    if arg:
+        raise NotImplementedError(repr(arg))
+    client = mpd_client()
+    client.play()
+    return client
+
+
+@memoize
 def mpd_client(server=None, port=None):
     """Connect to mpd on that server at that port"""
     server = server if server else 'localhost'
