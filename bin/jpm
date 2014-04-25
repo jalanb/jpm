@@ -3,7 +3,18 @@
 import sys
 
 
-from jpm.cli import jpm
+import jpm
+
+
+def main(args):
+    """Run the program"""
+    try:
+        for arg in args:
+            jpm.play(arg)
+    except Exception, e:
+        print >> sys.stderr, e
+        return not os.EX_OK
+    return os.EX_OK
 
 
 if __name__ == '__main__':
