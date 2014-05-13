@@ -7,12 +7,12 @@ import mpd
 from dotsite.decorators import memoize
 
 
-def play(arg=None):
-    if arg:
-        raise NotImplementedError(repr(arg))
-    client = mpd_client()
-    client.play()
-    return client
+def _state(client):
+    return client.status()['state']
+
+
+def _state_is_not(client, string):
+    return _state(client) != string
 
 
 @memoize
@@ -27,16 +27,24 @@ def mpd_client(server=None, port=None):
     return client
 
 
+def pause(client):
+    """If not already paused pause"""
+    if _state_is_not(client, 'pause'):
+        client.pause()
+
+
+def play(client):
+    """If not already playing play"""
+    if _state_is_not(client, 'play'):
+        client.play()
+
+
 def toggle(client):
     """If paused play, and vice versa"""
-    state = client.status()['state']
-    print state
-    if state == 'pause':
-        client.play()
-    else:
+    if _state_is_not(client, 'pause'):
         client.pause()
-    state = client.status()['state']
-    print state
+    else:
+        client.play()
 
 
 def current_album(client):
