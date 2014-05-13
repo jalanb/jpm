@@ -37,5 +37,6 @@ setup(
         'docs': ['Sphinx'],
         'development': ['pudb'],
         'testing': ['nose'],
-    }
+    },
+    keywords=["mpd"],
 )

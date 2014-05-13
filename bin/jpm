@@ -5,15 +5,40 @@ import os
 import sys
 
 
-import jpm
+from jpm import jpm  # pylint: disable-msg=no-name-in-module
+
+
+def current(client):
+    print jpm.format_current_album(client)
+
+
+def next(client):
+    # pylint: disable-msg=redefined-builtin
+    client.next()
+
+
+def prev(client):
+    client.previous()
+
+
+def find_method(name):
+    if name in globals():
+        return globals()[name]
+    if hasattr(jpm, name):
+        return getattr(jpm, name)
+
+    def not_found(_):
+        raise ValueError('No such command: %r' % name)
+
+    return not_found
 
 
 def main(args):
     """Run the program"""
+    client = jpm.mpd_client()
     try:
-        for arg in args:
-            jpm.play(arg)
-    except Exception, e:
+        _ = [find_method(arg)(client) for arg in args]
+    except Exception, e:  # pylint: disable-msg=broad-except
         print >> sys.stderr, e
         return not os.EX_OK
     return os.EX_OK
