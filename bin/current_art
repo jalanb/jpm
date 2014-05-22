@@ -4,28 +4,39 @@ import os
 import sys
 import glob
 import commands
+import argparse
 
 
 from jpm import jpm
 
 
-def output_path(ext):
-    return '/tmp/album_art.%s' % ext
+class AlbumArt(object):
+    def __init__(self, path):
+        self.path = path
+        self.stem, self.ext = os.path.splitext(path)
 
+    def _output_path(self, ext):
+        return '%s.%s' % (self.stem, ext)
 
-def write_image(data, ext):
-    path = output_path(ext)
-    with open(path, 'wb') as stream:
-        stream.write(data)
-    if ext != 'jpg':
-        command = '/usr/bin/convert %s %s' % (path, output_path('jpg'))
+    def write(self, data, ext):
+        path = self._write_data(data, ext)
+        if ext != self.ext:
+            self._fix_extension(path)
+
+    def _write_data(self, data, ext):
+        path = self._output_path(ext)
+        with open(path, 'wb') as stream:
+            stream.write(data)
+        return path
+
+    def _fix_extension(self, path):
+        command = '/usr/bin/convert %s %s' % (path, self.path)
         _ = commands.getstatusoutput(command)
         os.remove(path)
 
-
-def remove_old_art():
-    for path in glob.glob(output_path('*')):
-        os.remove(path)
+    def purge(self):
+        for path in glob.glob(self._output_path('*')):
+            os.remove(path)
 
 
 class ArtHistory(object):
@@ -48,18 +59,32 @@ class ArtHistory(object):
             stream.write(path)
 
 
-def main():
-    history = ArtHistory()
-    client = jpm.mpd_client()
-    path_to_current = jpm.path_to_current(client)
-    if history.old(path_to_current):
-        return os.EX_OK
-    remove_old_art()
+def parseargs():
+    parser = argparse.ArgumentParser(
+        description='Write album art for current mpd song')
+    parser.add_argument('path', help='File to be written',
+                        default='/tmp/album_art.jpg')
+    return parser.parse_args()
+
+
+def write_art(path, client):
+    album_art = AlbumArt(path)
+    album_art.purge()
     data, ext = jpm.current_art(client)
     if not data:
         print >> sys.stderr, 'Could not extract art from current file'
-        return not os.EX_OK
-    write_image(data, ext)
+        sys.exit(not os.EX_OK)
+    album_art.write(data, ext)
+
+
+def main():
+    args = parseargs()
+    client = jpm.mpd_client()
+    path_to_current = jpm.path_to_current(client)
+    history = ArtHistory()
+    if history.old(path_to_current):
+        return os.EX_OK
+    write_art(args.path, client)
     history.new(path_to_current)
     return os.EX_OK
 
