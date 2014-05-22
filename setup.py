@@ -30,7 +30,7 @@ setup(
         'Topic :: Multimedia :: Sound/Audio :: Players',
     ],
     scripts=['bin/jpm'],
-    install_requires=['python-mpd2'],
+    install_requires=['python-mpd2', 'mutagen'],
     test_suite='nose.collector',
     tests_require=['nose'],
     extras_require={

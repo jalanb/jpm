@@ -1,0 +1,70 @@
+#! /home/alanb/bin/python
+
+import os
+import sys
+import glob
+import commands
+
+
+from jpm import jpm
+
+
+def output_path(ext):
+    return '/tmp/album_art.%s' % ext
+
+
+def write_image(data, ext):
+    path = output_path(ext)
+    with open(path, 'wb') as stream:
+        stream.write(data)
+    if ext != 'jpg':
+        command = '/usr/bin/convert %s %s' % (path, output_path('jpg'))
+        _ = commands.getstatusoutput(command)
+        os.remove(path)
+
+
+def remove_old_art():
+    for path in glob.glob(output_path('*')):
+        os.remove(path)
+
+
+class ArtHistory(object):
+    def __init__(self):
+        stem, _ = os.path.splitext(__file__)
+        self.path = '%s.history' % stem
+
+    def read(self):
+        try:
+            with open(self.path) as stream:
+                return stream.read()
+        except IOError:
+            return ''
+
+    def write(self, path):
+        with open(self.path, 'w') as stream:
+            stream.write(path)
+
+
+def keep_old_art(path_to_current, history):
+    previous_file = history.read()
+    return path_to_current == previous_file
+
+
+def main():
+    history = ArtHistory()
+    client = jpm.mpd_client()
+    path_to_current = jpm.path_to_current(client)
+    if keep_old_art(path_to_current, history):
+        return os.EX_OK
+    remove_old_art()
+    data, ext = jpm.current_art(client)
+    if not data:
+        print >> sys.stderr, 'Could not extract art from current file'
+    else:
+        write_image(data, ext)
+        history.write(path_to_current)
+    return os.EX_OK
+
+
+if __name__ == '__main__':
+    sys.exit(main())
