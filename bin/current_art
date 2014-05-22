@@ -33,36 +33,34 @@ class ArtHistory(object):
         stem, _ = os.path.splitext(__file__)
         self.path = '%s.history' % stem
 
-    def read(self):
+    def _read(self):
         try:
             with open(self.path) as stream:
                 return stream.read()
         except IOError:
             return ''
 
-    def write(self, path):
+    def old(self, path):
+        return path == self._read()
+
+    def new(self, path):
         with open(self.path, 'w') as stream:
             stream.write(path)
-
-
-def keep_old_art(path_to_current, history):
-    previous_file = history.read()
-    return path_to_current == previous_file
 
 
 def main():
     history = ArtHistory()
     client = jpm.mpd_client()
     path_to_current = jpm.path_to_current(client)
-    if keep_old_art(path_to_current, history):
+    if history.old(path_to_current):
         return os.EX_OK
     remove_old_art()
     data, ext = jpm.current_art(client)
     if not data:
         print >> sys.stderr, 'Could not extract art from current file'
-    else:
-        write_image(data, ext)
-        history.write(path_to_current)
+        return not os.EX_OK
+    write_image(data, ext)
+    history.new(path_to_current)
     return os.EX_OK
 
 
