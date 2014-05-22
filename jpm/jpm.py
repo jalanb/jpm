@@ -1,6 +1,7 @@
 """Basic facilities for playing music"""
 
 
+import os
 import mpd
 
 
@@ -47,6 +48,10 @@ def toggle(client):
         client.play()
 
 
+def path_to_current(client):
+    return client.currentsong()['file']
+
+
 def current_album(client):
     title = client.currentsong()['title']
     album = client.currentsong()['album']
@@ -71,3 +76,24 @@ def format_current_album(client):
      Album: %s
      Track: %s
     %s''' % (artist, album, title, other_string)
+
+
+def current_art(client):
+    relative_path = client.currentsong()['file']
+    root = os.path.expanduser('~/media/music')
+    path = os.path.join(root, relative_path)
+    return get_art(path)
+
+
+def get_art(path):
+    from mutagen.id3 import ID3
+    frames = ID3(path)
+    try:
+        pic = frames.getall("APIC")[0]
+        group, ext = pic.mime.split('/', 1)
+        if group != 'image':
+            return None, None
+        return pic.data, ext
+    except:  # pylint: disable-msg=W0702
+        pass
+    return None, None
