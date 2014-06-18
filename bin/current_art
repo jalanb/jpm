@@ -1,10 +1,17 @@
 #! /home/alanb/bin/python
 
 import os
+import bdb
 import sys
 import glob
 import commands
 import argparse
+
+
+try:
+    import pudb as pdb
+except ImportError:
+    import pdb
 
 
 from jpm import jpm
@@ -64,7 +71,13 @@ def parseargs():
         description='Write album art for current mpd song')
     parser.add_argument('path', help='File to be written',
                         default='/tmp/album_art.jpg')
-    return parser.parse_args()
+    parser.add_argument(
+        '-U', '--Use_Debugger', help='(For developers) Debug the script',
+        action='store_true', default=False)
+    args = parser.parse_args()
+    if args.Use_Debugger:
+        pdb.set_trace()
+    return args
 
 
 def write_art(path, client):
@@ -77,8 +90,7 @@ def write_art(path, client):
     album_art.write(data, ext)
 
 
-def main():
-    args = parseargs()
+def current_art(args):
     client = jpm.mpd_client()
     path_to_current = jpm.path_to_current(client)
     history = ArtHistory()
@@ -87,6 +99,14 @@ def main():
     write_art(args.path, client)
     history.new(path_to_current)
     return os.EX_OK
+
+
+def main():
+    try:
+        args = parseargs()
+        return current_art(args)
+    except bdb.BdbQuit:
+        return os.EX_OK
 
 
 if __name__ == '__main__':
