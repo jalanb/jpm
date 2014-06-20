@@ -94,6 +94,6 @@ def get_art(path):
         if group != 'image':
             return None, None
         return pic.data, ext
-    except:  # pylint: disable-msg=W0702
+    except:  # pylint: disable=bare-except
         pass
     return None, None
