@@ -1,6 +1,10 @@
 #! /usr/bin/env python
 
 import sys
+import commands
+
+
+from sh import amixer  # pylint: disable-msg=no-name-in-module
 
 
 from jpm import jpm  # pylint: disable-msg=no-name-in-module
@@ -19,7 +23,28 @@ def prev(client):
     client.previous()
 
 
+def restart(_):
+    """Restart mpd's daemon"""
+    status, output = commands.getstatusoutput(
+        '/usr/bin/sudo /usr/sbin/service mpd restart')
+    if status != os.EX_OK:
+        print output
+    else:
+        unmute(_)
+
+
+def unmute(_):
+    """Use alsa mixer to unmute channels
+
+    This is probably machine-specific
+    """
+    for name in ['Master', 'Front', 'Headphone']:
+        channel = ','.join([name, '0'])
+        amixer.sset(channel, 'unmute')
+
+
 def find_method(name):
+    """Find a method with that name in the jpm module, or this script"""
     if name in globals():
         return globals()[name]
     if hasattr(jpm, name):
