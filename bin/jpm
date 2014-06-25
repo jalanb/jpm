@@ -4,7 +4,10 @@ import sys
 import commands
 
 
-from sh import amixer  # pylint: disable-msg=no-name-in-module
+try:
+    from sh import amixer  # pylint: disable-msg=no-name-in-module
+except ImportError:
+    amixer = None
 
 
 from jpm import jpm  # pylint: disable-msg=no-name-in-module
@@ -40,7 +43,8 @@ def unmute(_):
     """
     for name in ['Master', 'Front', 'Headphone']:
         channel = ','.join([name, '0'])
-        amixer.sset(channel, 'unmute')
+        if amixer is not None:
+            amixer.sset(channel, 'unmute')
 
 
 def find_method(name):
