@@ -41,10 +41,12 @@ def unmute(_):
 
     This is probably machine-specific
     """
-    for name in ['Master', 'Front', 'Headphone']:
-        channel = ','.join([name, '0'])
-        if amixer is not None:
-            amixer.sset(channel, 'unmute')
+    if not amixer:
+        print >> sys.stderr, 'Could not import amixer'
+        return
+    channel_names = ['Master', 'Front', 'Headphone']
+    channels = [','.join([c, '0']) for c in channel_names]
+    _ = [amixer.sset(channel, 'unmute') for channel in channels]
 
 
 def find_method(name):
@@ -58,6 +60,16 @@ def find_method(name):
         raise ValueError('No such command: %r' % name)
 
     return not_found
+
+
+def mpd_log(_):
+    with open('/var/log/mpd/mpd.log') as stream:
+        for line in stream:
+            print line.rstrip()
+
+
+def mpd_conf(_):
+    print 'sudo vim /etc/mpd.conf'
 
 
 def main(args):
