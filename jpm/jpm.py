@@ -9,7 +9,10 @@ from dotsite.decorators import memoize
 
 
 def _state(client):
-    return client.status()['state']
+    try:
+        return client.status()['state']
+    except mpd.ConnectionError:
+        return "Disconnected"
 
 
 def _state_is_not(client, string):
@@ -26,6 +29,19 @@ def mpd_client(server=None, port=None):
     client.idletimeout = None
     client.connect(server, port)
     return client
+
+
+def current(client):
+    print format_current_album(client)
+
+
+def next(client):
+    # pylint: disable-msg=redefined-builtin
+    client.next()
+
+
+def prev(client):
+    client.previous()
 
 
 def pause(client):
@@ -53,14 +69,21 @@ def path_to_current(client):
 
 
 def current_album(client):
-    title = client.currentsong()['title']
-    album = client.currentsong()['album']
-    artist = client.currentsong()['artist']
-    path = client.currentsong()['file']
-    if path.startswith('Compilations'):
-        tracks = client.find('album', album)
+    try:
+        current_song = client.currentsong()
+    except mpd.ConnectionError:
+        return None, None, None, []
+    title = current_song.get('title', None)
+    album = current_song.get('album', None)
+    artist = current_song.get('artist', None)
+    path = current_song.get('file', None)
+    if path:
+        if path.startswith('Compilations'):
+            tracks = client.find('album', album)
+        else:
+            tracks = client.find('album', album, 'artist', artist)
     else:
-        tracks = client.find('album', album, 'artist', artist)
+        tracks = []
     other_tracks = [t for t in tracks if t['title'] != title]
     other_titles = [t['title'] for t in other_tracks]
     return artist, album, title, other_titles
