@@ -65,3 +65,14 @@ def mpd_log():
 
 def mpd_conf():
     print 'sudo vim /etc/mpd.conf'
+
+
+def next(client):
+    # pylint: disable-msg=redefined-builtin
+    client.next()
+
+
+def pause(client):
+    """If not already paused pause"""
+    if client.state_is_not(client, 'pause'):
+        client.pause()
