@@ -1,18 +1,17 @@
 #! /usr/bin/env python
 
 import sys
-import inspect
 
 
-from jpm import jpmpd  # pylint: disable-msg=no-name-in-module
-from jpm import jpm  # pylint: disable-msg=no-name-in-module
+from jpm.mpd import services  # pylint: disable-msg=no-name-in-module
+from mpd.mpc import Mpc
 
 
-def find_method(name):
+def find_method(client, name):
     """Find a method with that name in the jpm module, or this script"""
-    for module in [jpm, jpmpd]:
-        if hasattr(module, name):
-            return getattr(module, name)
+    for item in [client, services]:
+        if hasattr(item, name):
+            return getattr(item, name)
 
     def not_found():
         raise ValueError('No such command: %r' % name)
@@ -22,15 +21,16 @@ def find_method(name):
 
 def main(args):
     """Run the program"""
-    client = jpm.mpd_client()
+    client = Mpc()
     try:
         for arg in args:
-            method = find_method(arg)
-            method_args = inspect.getargspec(method).args
-            if 'client' in method_args:
-                method(client)
-            else:
+            method = getattr(client, arg, None)
+            if method:
                 method()
+            else:
+                method = getattr(services, arg, None)
+                if method:
+                    method()
     except Exception, e:  # pylint: disable-msg=broad-except
         print >> sys.stderr, e
         return not os.EX_OK
