@@ -5,7 +5,7 @@ import jpm
 
 
 def test_doc():
-    assert getattr(jpm, '__doc__', None) is not None
+    assert jpm.__doc__
 
 
 def test_version():
