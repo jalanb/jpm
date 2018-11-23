@@ -15,7 +15,7 @@ Interfaces
 I spend my day in bash, Python and Firefox, so if I can use it from there, fine by me.
 
 There are already many great apps to handle the rest:
- * ~~make the noises with mpd or mplayer~~ Use [music-player][mp], [This guy][guy] [gets it][it]!
+ * ~~make the noises with mpd or mplayer~~ Use [music-player][mp], This [guy][guy] gets [it][it]!
  * edit the sounds with Audacity or Fission
  * edit the tags with MusicBrainz or TriTag
  * show the album art in Firefox or gimp, or even display
