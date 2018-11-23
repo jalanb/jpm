@@ -3,7 +3,8 @@
 
 import os
 import sys
-import commands
+
+from dotsite import cmnds as commands
 
 
 try:
@@ -17,9 +18,9 @@ def _mpd_service(start_string, display=False):
     os_status, output = commands.getstatusoutput(
         '/usr/bin/sudo /usr/sbin/service mpd %s' % start_string)
     if display:
-        print output
+        print(output)
     elif os_status != os.EX_OK:
-        print >> sys.stderr, output
+        print(output, file=sys.stderr)
     else:
         unmute()
 
@@ -50,7 +51,7 @@ def unmute():
     This is probably machine-specific
     """
     if not amixer:
-        print >> sys.stderr, 'Could not import amixer'
+        print('Could not import amixer', file=sys.stderr)
         return
     channel_names = ['Master', 'Front', 'Headphone']
     channels = [','.join([c, '0']) for c in channel_names]
@@ -60,11 +61,11 @@ def unmute():
 def mpd_log():
     with open('/var/log/mpd/mpd.log') as stream:
         for line in stream:
-            print line.rstrip()
+            print(line.rstrip())
 
 
 def mpd_conf():
-    print 'sudo vim /etc/mpd.conf'
+    print('sudo vim /etc/mpd.conf')
 
 
 def next(client):

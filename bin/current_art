@@ -1,11 +1,12 @@
 #! /home/alanb/bin/python
 
-import os
+import argparse
 import bdb
+import os
 import sys
 import glob
-import commands
-import argparse
+
+from dotsite import cmnds as commands
 
 
 try:
@@ -85,7 +86,7 @@ def write_art(path, client):
     album_art.purge()
     data, ext = jpm.current_art(client)
     if not data:
-        print >> sys.stderr, 'Could not extract art from current file'
+        print('Could not extract art from current file', file=sys.stderr)
         sys.exit(not os.EX_OK)
     album_art.write(data, ext)
 
