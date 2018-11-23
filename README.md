@@ -23,14 +23,15 @@ Interfaces
 
 # UI
 * Album based
-** Album Art, Year
-** Tracks, rated
-*** Current highlighted
-* Flask
+
+* Album Art, Year
+* Tracks, rated (*_current_*)
+* Flask framework
+* No [templates] (no Java neither)
 
 # WWW
  * Use [music-player][mp]
- ** That [guy][guy] gets [it][it]!
+ * That [guy][guy] gets [it][it]!
  * Fission
  * MusicBrainz
 
@@ -40,3 +41,4 @@ Interfaces
 [mp]: https://github.com/albertz/music-player
 [guy]: https://github.com/albertz
 [it]: http://albertz.github.io/music-player/
+[templates]: https://bitbucket.org/tavisrudd/throw-out-your-templates
