@@ -40,5 +40,5 @@ Interfaces
 
 [mp]: https://github.com/albertz/music-player
 [guy]: https://github.com/albertz
-[it]: https://github.com/albertz/music-player/blob/master/WhatIsAMusicPlayer.md
+[it]: https://github.com/albertz/music-player/blob/master/WhatIsAMusicPlayer.md#intelligent-automatic-queue
 [templates]: https://bitbucket.org/tavisrudd/throw-out-your-templates
