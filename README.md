@@ -40,5 +40,5 @@ Interfaces
 
 [mp]: https://github.com/albertz/music-player
 [guy]: https://github.com/albertz
-[it]: http://albertz.github.io/music-player/
+[it]: https://github.com/albertz/music-player/blob/master/WhatIsAMusicPlayer.md
 [templates]: https://bitbucket.org/tavisrudd/throw-out-your-templates
