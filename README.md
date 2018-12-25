@@ -7,12 +7,9 @@ Just Play Music
 Rationale
 ---------
 
-My library is too big, so I'm not interested in playlists, or folders. I don't want to have to choose, 
+My library is too big, so I'm not interested in playlists, or folders. I've aready chosen my favourites, and hates: rated on a 9-star scale, and most faves "coloured" on an RGB scale.
 
 I just wanta a machine to play music. 
-
-I'll show you my library, where the good tracks are.
-  Just play that.
 
 Interfaces
 ----------
@@ -21,19 +18,27 @@ Interfaces
 * playing from a mac-mini, under the kitchen speakers
 * Python support
 
+# WWW
+* 
+
 # UI
 * Album based
-
-* Album Art, Year
-* Tracks, rated (*_current_*)
-* Flask framework
+** Album Art, Year
+** Tracks, rated (*_current_*)
+* Flask
+** async
 * No [templates] (no Java neither)
 
 # WWW
- * Use [music-player][mp]
- * That [guy][guy] gets [it][it]!
- * Fission
- * MusicBrainz
+* Use [music-player][mp]
+** That [guy][guy] gets [it][it]!
+* Discogs
+* Musicbrainz
+* Last.fm
+* "similar music" sites
+
+# Tools
+* Fission
 
 # Quotes
 * That'll do, pig.
