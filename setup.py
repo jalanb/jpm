@@ -12,7 +12,7 @@ setup(
     version=jpm.__version__,
     url='https://github.com/jalanb/jpm',
     license='MIT License',
-    author='J Alan Brogan',
+    author="jalanb",
     author_email='jpm@al-got-rhythm.net',
     description='Just Play Music',
     platforms='any',
