@@ -1,21 +1,10 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 
-import os
 import sys
 
 
-import jpm
-
-
-def main(args):
-    """Run the program"""
-    try:
-        jpm.play(args)
-    except Exception, e:
-        print >> sys.stderr, e
-        return not os.EX_OK
-    return os.EX_OK
+from jpm.cli import jpm
 
 
 if __name__ == '__main__':
-    sys.exit(sys.argv[1:])
+    sys.exit(jpm.main(sys.argv[1:]))
