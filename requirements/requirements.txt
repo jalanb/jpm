@@ -1,4 +1,4 @@
-nose
-python-mpd2
 discogs_client
+nose
 pysyte
+python-mpd2
