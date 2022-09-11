@@ -2,7 +2,7 @@
 
 
 import os
-import mpd  # despite the name, this is a client
+import mpd  # despite the name, this has a client
 
 
 from jpm.files import get_art

@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-.cd
-
-=======
-current_art.history
->>>>>>> 36efabb (script to extract art from current mp3 file)
 *.py[cod]
 
 # C extensions
@@ -39,3 +33,6 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Et Cetera
+current_art.history
