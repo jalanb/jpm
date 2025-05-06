@@ -1,3 +1,0 @@
-nose
-python-mpd2
-discogs_client

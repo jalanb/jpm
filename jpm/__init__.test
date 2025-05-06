@@ -1,0 +1,11 @@
+Test the jpm package
+====================
+
+    >>> import jpm
+    >>> assert 'Just Play Music' in jpm.__doc__
+
+
+Check version
+-------------
+
+    >>> jpm.__version__ > '0.2.0'

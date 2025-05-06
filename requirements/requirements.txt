@@ -1,0 +1,4 @@
+discogs_client
+nose
+pysyte
+python-mpd2
