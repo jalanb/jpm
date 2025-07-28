@@ -1,0 +1,5 @@
+-r devops.txt
+
+ipython
+oudb
+sh
